@@ -1,9 +1,9 @@
 use std::path::Path;
 use std::thread;
 use std::time::Duration;
-use test_engine::logs::{errores, logger};
+use test_engine::logs::{error_log, logger};
 
-fn main() -> Result<(), errores::Error> {
+fn main() -> Result<(), error_log::ErrorLog> {
     let archivo = Path::new("algo.txt");
     let (sender, receiver) = logger::inicializar_logger(archivo)?;
 

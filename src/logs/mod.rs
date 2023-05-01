@@ -6,4 +6,4 @@ pub mod logger_sender;
 
 pub mod logger_receiver;
 
-pub mod errores;
+pub mod error_log;
