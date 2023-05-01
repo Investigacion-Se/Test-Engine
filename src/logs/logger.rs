@@ -1,39 +1,17 @@
-use super::nivel::Nivel;
+use super::logger_sender::LoggerSender;
+use super::logger_receiver::LoggerReceiver;
+use super::errores::Error;
 
-pub(crate) fn inicializar_logger() -> bool {
-    // TODO: create archivo para hacer el log
-    true
+use std::sync::mpsc;
+use std::path::Path;
+
+pub/*(crete)*/ fn inicializar_logger(archivo_loggear: &Path) -> Result<(LoggerSender, LoggerReceiver), Error> {
+
+    let (sender, receiver) = mpsc::channel::<String>();
+
+    let logger_sender = LoggerSender::new(sender);
+    let logger_receiver = LoggerReceiver::new(archivo_loggear, receiver)?;
+
+    Ok((logger_sender, logger_receiver))
 }
 
-pub(crate) fn finalizar_logger() {
-    // TODO: limpear la creacion del archivo
-}
-
-pub fn loggear(nivel: Nivel, mensaje: String) {
-    let texto_completo = format!("{nivel} {mensaje}");
-    println!("{texto_completo}");
-}
-
-pub fn log_fatal(mensaje: String) {
-    loggear(Nivel::FATAL, mensaje);
-}
-
-pub fn log_error(mensaje: String) {
-    loggear(Nivel::ERROR, mensaje);
-}
-
-pub fn log_advertencia(mensaje: String) {
-    loggear(Nivel::ADVERTENCIA, mensaje);
-}
-
-pub fn log_info(mensaje: String) {
-    loggear(Nivel::INFO, mensaje);
-}
-
-pub fn log_debug(mensaje: String) {
-    loggear(Nivel::DEBUG, mensaje);
-}
-
-pub fn log_rastro(mensaje: String) {
-    loggear(Nivel::RASTRO, mensaje);
-}
