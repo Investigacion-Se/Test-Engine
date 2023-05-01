@@ -15,16 +15,12 @@ pub struct LoggerReceiver {
 
 impl LoggerReceiver {
     pub(crate) fn new(archivo_log: &Path, receiver: Receiver<MensajeLog>) -> Result<Self, Error> {
-        let mut resultado_archivo = OpenOptions::new().append(true).open(archivo_log);
-
-        if resultado_archivo.is_err() {
-            resultado_archivo = File::create(archivo_log);
-        }
+        let resultado_archivo = OpenOptions::new().append(true).open(archivo_log);
 
         let archivo = match resultado_archivo {
             Ok(archivo) => archivo,
             _ => {
-                return Err(Error::ErrorNoSePudoCrearArchivo);
+                return Err(Error::ErrorNoSePudoEncontrarElArchivo);
             }
         };
 

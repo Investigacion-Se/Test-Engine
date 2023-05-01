@@ -1,6 +1,6 @@
 #[derive(Debug)]
 pub enum Error {
     ErrorNoSeEncuentraReceiver,
-    ErrorNoSePudoCrearArchivo,
+    ErrorNoSePudoEncontrarElArchivo,
     ErrorNoSePudoAgregarTextoAlArchivo,
 }
