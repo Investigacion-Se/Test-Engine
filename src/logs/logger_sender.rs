@@ -1,22 +1,23 @@
+use super::logger::MensajeLog;
 use std::sync::mpsc::Sender;
 
-use super::nivel::Nivel;
 use super::errores::Error;
+use super::nivel::Nivel;
 
 #[derive(Debug, Clone)]
 pub struct LoggerSender {
-    sender: Sender<String>,
+    sender: Sender<MensajeLog>,
 }
 
 impl LoggerSender {
-
-    pub(crate) fn new(sender: Sender<String>) -> Self {
+    pub(crate) fn new(sender: Sender<MensajeLog>) -> Self {
         LoggerSender { sender }
     }
 
     pub(crate) fn loggear(&self, nivel: Nivel, mensaje: String) -> Result<(), Error> {
-        let texto_completo = format!("{nivel} {mensaje}\n");
-        self.sender.send(texto_completo)?;
+        if self.sender.send((nivel, mensaje)).is_err() {
+            return Err(Error::ErrorNoSeEncuentraReceiver);
+        }
         Ok(())
     }
 

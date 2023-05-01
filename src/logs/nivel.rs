@@ -1,4 +1,3 @@
-
 #[derive(Debug)]
 pub enum Nivel {
     FATAL,
@@ -6,7 +5,7 @@ pub enum Nivel {
     ADVERTENCIA,
     INFO,
     DEBUG,
-    RASTRO
+    RASTRO,
 }
 
 impl std::fmt::Display for Nivel {
