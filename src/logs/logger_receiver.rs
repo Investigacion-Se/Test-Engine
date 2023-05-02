@@ -58,6 +58,6 @@ impl LoggerReceiver {
 
     /// Formatear el mensaje para que aparezca en los logs
     fn format_mensaje(nivel: Nivel, mensaje: String) -> String {
-        format!("{nivel} {mensaje}\n")
+        format!("[{nivel}] {mensaje}\n")
     }
 }
