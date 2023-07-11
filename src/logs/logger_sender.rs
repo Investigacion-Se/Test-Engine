@@ -21,64 +21,57 @@ impl LoggerSender {
     /// Envia el mensaje deseado con su nivel de prioridad
     /// ### Errores
     ///  * `Error::ErrorNoSeEncuentraReceiver`: Este error puede aparecer cuando no existe un receiver
-    pub(crate) fn loggear(&self, nivel: Nivel, mensaje: String) -> Result<(), ErrorLog> {
+    pub(crate) fn loggear(&self, nivel: Nivel, mensaje: String) {
         if self.sender.send((nivel, mensaje)).is_err() {
-            return Err(ErrorLog::ErrorNoSeEncuentraReceiver);
+            println!("No se puede usar este sender");
         }
-        Ok(())
     }
 
     /// Envia el mensaje deseado con el nivel `Nivel::FATAL`
     /// 
     /// ### Errores
     ///  * `Error::ErrorNoSeEncuentraReceiver`: Este error puede aparecer cuando no existe un receiver
-    pub fn log_fatal(&self, mensaje: String) -> Result<(), ErrorLog> {
-        self.loggear(Nivel::FATAL, mensaje)?;
-        Ok(())
+    pub fn log_fatal(&self, mensaje: String) {
+        self.loggear(Nivel::FATAL, mensaje)
     }
 
     /// Envia el mensaje deseado con el nivel `Nivel::ERROR`
     /// 
     /// ### Errores
     ///  * `Error::ErrorNoSeEncuentraReceiver`: Este error puede aparecer cuando no existe un receiver
-    pub fn log_error(&self, mensaje: String) -> Result<(), ErrorLog> {
-        self.loggear(Nivel::ERROR, mensaje)?;
-        Ok(())
+    pub fn log_error(&self, mensaje: String) {
+        self.loggear(Nivel::ERROR, mensaje)
     }
 
     /// Envia el mensaje deseado con el nivel `Nivel::ADVERTENCIA`
     /// 
     /// ### Errores
     ///  * `Error::ErrorNoSeEncuentraReceiver`: Este error puede aparecer cuando no existe un receiver
-    pub fn log_advertencia(&self, mensaje: String) -> Result<(), ErrorLog> {
-        self.loggear(Nivel::ADVERTENCIA, mensaje)?;
-        Ok(())
+    pub fn log_advertencia(&self, mensaje: String) {
+        self.loggear(Nivel::ADVERTENCIA, mensaje)
     }
 
     /// Envia el mensaje deseado con el nivel `Nivel::INFO`
     /// 
     /// ### Errores
     ///  * `Error::ErrorNoSeEncuentraReceiver`: Este error puede aparecer cuando no existe un receiver
-    pub fn log_info(&self, mensaje: String) -> Result<(), ErrorLog> {
-        self.loggear(Nivel::INFO, mensaje)?;
-        Ok(())
+    pub fn log_info(&self, mensaje: String) {
+        self.loggear(Nivel::INFO, mensaje) 
     }
 
     /// Envia el mensaje deseado con el nivel `Nivel::DEBUG`
     /// 
     /// ### Errores
     ///  * `Error::ErrorNoSeEncuentraReceiver`: Este error puede aparecer cuando no existe un receiver
-    pub fn log_debug(&self, mensaje: String) -> Result<(), ErrorLog> {
-        self.loggear(Nivel::DEBUG, mensaje)?;
-        Ok(())
+    pub fn log_debug(&self, mensaje: String) {
+        self.loggear(Nivel::DEBUG, mensaje)
     }
 
     /// Envia el mensaje deseado con el nivel `Nivel::RASTRO`
     /// 
     /// ### Errores
     ///  * `Error::ErrorNoSeEncuentraReceiver`: Este error puede aparecer cuando no existe un receiver
-    pub fn log_rastro(&self, mensaje: String) -> Result<(), ErrorLog> {
-        self.loggear(Nivel::RASTRO, mensaje)?;
-        Ok(())
+    pub fn log_rastro(&self, mensaje: String) {
+        self.loggear(Nivel::RASTRO, mensaje)
     }
 }

@@ -1,10 +1,11 @@
-use super::error_log::ErrorLog;
-use super::logger::MensajeLog;
-use super::nivel::Nivel;
+use super::{
+    error_log::ErrorLog,
+    logger::MensajeLog,
+    nivel::Nivel,
+};
+
 use std::{
-    fs::{File, OpenOptions},
     io::Write,
-    path::Path,
     sync::mpsc::Receiver,
 };
 
@@ -13,27 +14,18 @@ use std::{
 /// ### Errores
 ///  * `Error::ErrorNoSePuedeEncontrarElArchivo`: Este error va a aparecer cuando el archivo pasado no se exista
 ///  * `Error::ErrorNoSePudoAgregarTextoAlArchivo`: Este error va a aparece cuando no se puede agregar más lineas al archivo dado
-pub struct LoggerReceiver {
+pub struct LoggerReceiver<W: Write> {
     receiver: Receiver<MensajeLog>,
-    archivo: File,
+    archivo: W,
 }
 
-impl LoggerReceiver {
+impl<W: Write> LoggerReceiver<W> {
     /// Crea el receiver a partir del path de un archivo y un receiver de channel
     /// 
     /// ### Errores
     ///  * `Error::ErrorNoSePuedeEncontrarElArchivo`: Este error va a aparecer cuando el archivo pasado no se exista
-    pub(crate) fn new(archivo_log: &Path, receiver: Receiver<MensajeLog>) -> Result<Self, ErrorLog> {
-        let resultado_archivo = OpenOptions::new().append(true).open(archivo_log);
-
-        let archivo = match resultado_archivo {
-            Ok(archivo) => archivo,
-            _ => {
-                return Err(ErrorLog::ErrorNoSePudoEncontrarElArchivo);
-            }
-        };
-
-        Ok(LoggerReceiver { receiver, archivo })
+    pub(crate) fn new(archivo: W, receiver: Receiver<MensajeLog>) -> Self {
+        LoggerReceiver { receiver, archivo }
     }
 
     /// La acción de recibir los mensajes mandados por `LoggerSender`
