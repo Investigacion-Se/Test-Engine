@@ -1,0 +1,4 @@
+
+pub enum ErrorInicializacion {
+    ArchivoDeLogsNoExiste,
+}

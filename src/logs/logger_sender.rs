@@ -1,8 +1,9 @@
-use super::logger::MensajeLog;
-use std::sync::mpsc::Sender;
+use super::{
+    logger::MensajeLog,
+    nivel::Nivel,
+};
 
-use super::error_log::ErrorLog;
-use super::nivel::Nivel;
+use std::sync::mpsc::Sender;
 
 /// Se encarga de mandar los mensajes de logs, este se puede clonar para tener varios senders
 ///
@@ -21,8 +22,8 @@ impl LoggerSender {
     /// Envia el mensaje deseado con su nivel de prioridad
     /// ### Errores
     ///  * `Error::ErrorNoSeEncuentraReceiver`: Este error puede aparecer cuando no existe un receiver
-    pub(crate) fn loggear(&self, nivel: Nivel, mensaje: String) {
-        if self.sender.send((nivel, mensaje)).is_err() {
+    pub(crate) fn loggear(&self, nivel: Nivel, mensaje: &str) {
+        if self.sender.send((nivel, mensaje.to_string())).is_err() {
             println!("No se puede usar este sender");
         }
     }
@@ -31,7 +32,7 @@ impl LoggerSender {
     ///
     /// ### Errores
     ///  * `Error::ErrorNoSeEncuentraReceiver`: Este error puede aparecer cuando no existe un receiver
-    pub fn log_fatal(&self, mensaje: String) {
+    pub fn log_fatal(&self, mensaje: &str) {
         self.loggear(Nivel::FATAL, mensaje)
     }
 
@@ -39,7 +40,7 @@ impl LoggerSender {
     ///
     /// ### Errores
     ///  * `Error::ErrorNoSeEncuentraReceiver`: Este error puede aparecer cuando no existe un receiver
-    pub fn log_error(&self, mensaje: String) {
+    pub fn log_error(&self, mensaje: &str) {
         self.loggear(Nivel::ERROR, mensaje)
     }
 
@@ -47,7 +48,7 @@ impl LoggerSender {
     ///
     /// ### Errores
     ///  * `Error::ErrorNoSeEncuentraReceiver`: Este error puede aparecer cuando no existe un receiver
-    pub fn log_advertencia(&self, mensaje: String) {
+    pub fn log_advertencia(&self, mensaje: &str) {
         self.loggear(Nivel::ADVERTENCIA, mensaje)
     }
 
@@ -55,7 +56,7 @@ impl LoggerSender {
     ///
     /// ### Errores
     ///  * `Error::ErrorNoSeEncuentraReceiver`: Este error puede aparecer cuando no existe un receiver
-    pub fn log_info(&self, mensaje: String) {
+    pub fn log_info(&self, mensaje: &str) {
         self.loggear(Nivel::INFO, mensaje)
     }
 
@@ -63,7 +64,7 @@ impl LoggerSender {
     ///
     /// ### Errores
     ///  * `Error::ErrorNoSeEncuentraReceiver`: Este error puede aparecer cuando no existe un receiver
-    pub fn log_debug(&self, mensaje: String) {
+    pub fn log_debug(&self, mensaje: &str) {
         self.loggear(Nivel::DEBUG, mensaje)
     }
 
@@ -71,7 +72,7 @@ impl LoggerSender {
     ///
     /// ### Errores
     ///  * `Error::ErrorNoSeEncuentraReceiver`: Este error puede aparecer cuando no existe un receiver
-    pub fn log_rastro(&self, mensaje: String) {
+    pub fn log_rastro(&self, mensaje: &str) {
         self.loggear(Nivel::RASTRO, mensaje)
     }
 }
