@@ -41,6 +41,8 @@
         "isWholeLine": false,
     },
     "files.associations": {
+        "*.rmd": "markdown",
+        "*.compute": "hlsl",
         "test.h": "c",
         "vulkan.h": "c",
         "vulkan_core.h": "c",
@@ -49,6 +51,8 @@
         "typeinfo": "c",
         "windowsx.h": "c",
         "vulkan_platform.h": "c",
-        "renderer_frontend.h": "c"
+        "renderer_frontend.h": "c",
+        "application.h": "c",
+        "logger.h": "c"
     }
 }
