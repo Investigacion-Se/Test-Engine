@@ -4,9 +4,8 @@
     "terminal.integrated.shell.windows": "c:/Program Files/PowerShell/7/pwsh.exe",
     "editor.fontFamily": "Liberation Mono",
     "editor.fontSize": 14,
-    
+    "editor.lineNumbers": "relative",
     "workbench.statusBar.visible": true,
-    "editor.lineNumbers": "on",
     "C_Cpp.clang_format_style": "{ BasedOnStyle: Google, IndentWidth: 4, ColumnLimit: 0, NamespaceIndentation: All}",
     "C_Cpp.vcFormat.newLine.beforeOpenBrace.block": "sameLine",
     "C_Cpp.vcFormat.newLine.beforeOpenBrace.type": "sameLine",
