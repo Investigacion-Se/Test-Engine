@@ -3,6 +3,7 @@
 #include "core/application.h"
 #include "core/logger.h"
 #include "game_types.h"
+#include "core/kmemory.h"
 #include "kerror.h"
 
 // Definición externa de una función que crea un juego
@@ -11,6 +12,8 @@ extern b8 create_game(game* out_game);
 // Nuevo entry point
 int main(void) {
     kerror error = KERROR_NONE;
+
+    initialize_memory();
 
     game game_inst;
     if (!create_game(&game_inst)) {
@@ -35,6 +38,7 @@ int main(void) {
         goto error_exit;
     }
 
+    shutdown_memory();
     return 0;
 
     error_exit:

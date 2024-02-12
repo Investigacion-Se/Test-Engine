@@ -1,6 +1,7 @@
 #include "game.h"
 
 #include <entry.h>
+#include <core/kmemory.h>
 
 // TODO: eliminar
 #include <platform/platform.h>
@@ -17,7 +18,7 @@ b8 create_game(game* out_game) {
     out_game->render = game_render;
     out_game->on_resize = game_on_resize;
 
-    out_game->state = platform_allocate(sizeof(game_state), FALSE);
+    out_game->state = kallocate(sizeof(game_state), MEMORY_TAG_GAME);
 
     return TRUE;
 }
