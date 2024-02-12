@@ -5,6 +5,7 @@
 #include "core/kmemory.h"
 #include "core/logger.h"
 #include "core/event.h"
+#include "core/input.h"
 
 typedef struct application_state {
     game* game_inst;
@@ -28,6 +29,7 @@ b8 application_create(game* game_inst) {
     app_state.game_inst = game_inst;
 
     initialize_logging();
+    input_initialize();
 
     // TODO: eliminar
     KFATAL("Esto es una prueba de mensaje: %i", 123);
@@ -90,12 +92,16 @@ b8 application_run() {
                 app_state.is_running = FALSE;
                 break;
             }
+
+            // Se actualiza el input al final del frame
+            input_update((f64)0);
         }
     }
 
     app_state.is_running = FALSE;
     
     event_shutdown();
+    input_shutdown();
 
     platform_shutdown(&app_state.platform);
     return TRUE;
