@@ -55,6 +55,7 @@
         "application.h": "c",
         "logger.h": "c",
         "defines.h": "c",
-        "platform.h": "c"
+        "platform.h": "c",
+        "utility": "cpp"
     }
 }

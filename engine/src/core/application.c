@@ -4,6 +4,7 @@
 #include "platform/platform.h"
 #include "core/kmemory.h"
 #include "core/logger.h"
+#include "core/event.h"
 
 typedef struct application_state {
     game* game_inst;
@@ -35,6 +36,11 @@ b8 application_create(game* game_inst) {
     KINFO("Esto es una prueba de mensaje: %i", 123);
     KDEBUG("Esto es una prueba de mensaje: %i", 123);
     KTRACE("Esto es una prueba de mensaje: %i", 123);
+
+    if (!event_initialize()) {
+        KERROR("Failed to initialize event system");
+        return FALSE;
+    }
 
     app_state.is_running = TRUE;
     app_state.is_suspended = FALSE;
@@ -89,6 +95,8 @@ b8 application_run() {
 
     app_state.is_running = FALSE;
     
+    event_shutdown();
+
     platform_shutdown(&app_state.platform);
     return TRUE;
 }
