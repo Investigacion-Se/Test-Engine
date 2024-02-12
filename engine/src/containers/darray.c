@@ -1,20 +1,27 @@
-#include "containers/darray.h"
+#include "darray.h"
 
-#include "core/kmemory.h"
 #include "core/logger.h"
+#include "core/kmemory.h"
 
 void* _darray_create(u64 length, u64 stride) {
     u64 header_size = DARRAY_FIELD_LENGTH * sizeof(u64);
     u64 array_size = length * stride;
     u64* new_array = kallocate(header_size + array_size, MEMORY_TAG_DARRAY);
-    kset_memory(new_array, 0, header_size + array_size);
+
     new_array[DARRAY_CAPACITY] = length;
     new_array[DARRAY_LENGTH] = 0;
     new_array[DARRAY_STRIDE] = stride;
+    
     return (void*)(new_array + DARRAY_FIELD_LENGTH);
 }
 
 void _darray_destroy(void* array) {
+#if KRELEASE != 1
+    if (!array) {
+        KERROR("Trying to destroy a NULL darray");
+        return;
+    }
+#endif
     u64* header = (u64*)array - DARRAY_FIELD_LENGTH;
     u64 header_size = DARRAY_FIELD_LENGTH * sizeof(u64);
     u64 total_size = header_size + header[DARRAY_CAPACITY] * header[DARRAY_STRIDE];
@@ -22,21 +29,41 @@ void _darray_destroy(void* array) {
 }
 
 u64 _darray_field_get(void* array, u64 field) {
+#if KRELEASE != 1
+    if (!array) {
+        KERROR("Trying to get a field from a NULL darray");
+        return 0;
+    }
+#endif
     u64* header = (u64*)array - DARRAY_FIELD_LENGTH;
     return header[field];
 }
 
 void _darray_field_set(void* array, u64 field, u64 value) {
+#if KRELEASE != 1
+    if (!array) {
+        KERROR("Trying to set a field from a NULL darray");
+        return;
+    }
+#endif
     u64* header = (u64*)array - DARRAY_FIELD_LENGTH;
     header[field] = value;
 }
 
 void* _darray_resize(void* array) {
+#if KRELEASE != 1
+    if (!array) {
+        KERROR("Trying to resize from a NULL darray");
+        return array;
+    }
+#endif
     u64 length = darray_length(array);
     u64 stride = darray_stride(array);
+    
     void* temp = _darray_create(
-        (DARRAY_RESIZE_FACTOR * darray_capacity(array)),
+        (DARRAY_RESIZE_FACTOR * darray_capacity(array)), 
         stride);
+    
     kcopy_memory(temp, array, length * stride);
 
     _darray_field_set(temp, DARRAY_LENGTH, length);
@@ -45,8 +72,15 @@ void* _darray_resize(void* array) {
 }
 
 void* _darray_push(void* array, const void* value_ptr) {
+#if KRELEASE != 1
+    if (!array) {
+        KERROR("Trying to push from a NULL darray");
+        return array;
+    }
+#endif
     u64 length = darray_length(array);
     u64 stride = darray_stride(array);
+
     if (length >= darray_capacity(array)) {
         array = _darray_resize(array);
     }
@@ -59,8 +93,24 @@ void* _darray_push(void* array, const void* value_ptr) {
 }
 
 void _darray_pop(void* array, void* dest) {
+#if KRELEASE != 1
+    if (!array) {
+        KERROR("Trying to pop from a NULL darray");
+        return;
+    }
+#endif
+
     u64 length = darray_length(array);
+
+#if KRELEASE != 1
+    if (length == 0) {
+        KERROR("Trying to pop from a empty darray");
+        return;
+    }
+#endif
+
     u64 stride = darray_stride(array);
+
     u64 addr = (u64)array;
     addr += ((length - 1) * stride);
     kcopy_memory(dest, (void*)addr, stride);
@@ -68,13 +118,23 @@ void _darray_pop(void* array, void* dest) {
 }
 
 void* _darray_pop_at(void* array, u64 index, void* dest) {
+#if KRELEASE != 1
+    if (!array) {
+        KERROR("Trying to pop at %i from a NULL darray", index);
+        return array;
+    }
+#endif
+    
     u64 length = darray_length(array);
-    u64 stride = darray_stride(array);
+
+#if KRELEASE != 1
     if (index >= length) {
         KERROR("Index outside the bounds of this array! Length: %i, index: %index", length, index);
         return array;
     }
-
+#endif
+    
+    u64 stride = darray_stride(array);
     u64 addr = (u64)array;
     kcopy_memory(dest, (void*)(addr + (index * stride)), stride);
 
@@ -91,12 +151,22 @@ void* _darray_pop_at(void* array, u64 index, void* dest) {
 }
 
 void* _darray_insert_at(void* array, u64 index, void* value_ptr) {
+#if KRELEASE != 1
+    if (!array) {
+        KERROR("Trying to insert at %i from a NULL darray", index);
+        return array;
+    }
+#endif
     u64 length = darray_length(array);
-    u64 stride = darray_stride(array);
+    
+#if KRELEASE != 1
     if (index >= length) {
         KERROR("Index outside the bounds of this array! Length: %i, index: %index", length, index);
         return array;
     }
+#endif    
+    
+    u64 stride = darray_stride(array);
     if (length >= darray_capacity(array)) {
         array = _darray_resize(array);
     }
