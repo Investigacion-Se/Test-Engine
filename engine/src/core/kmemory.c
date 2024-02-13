@@ -1,9 +1,9 @@
 #include "core/kmemory.h"
 
 #include "core/logger.h"
+#include "core/kstring.h"
 #include "platform/platform.h"
 
-// TODO: Custom string lib
 #include <string.h>
 #include <stdio.h>
 
@@ -84,7 +84,7 @@ char* get_memory_usage_str() {
     const u64 kib = 1024;
 
     char buffer[8000] = "System memory use (tagged): \n";
-    u64 offset = strlen(buffer);
+    u64 offset = string_length(buffer);
 
     for (u32 tag = 0; tag < MEMORY_TAG_MAX_TAGS; ++tag) {
         char uint[4] = "XiB";
@@ -109,6 +109,6 @@ char* get_memory_usage_str() {
         offset += length;
     }
 
-    char* out_string = _strdup(buffer);
+    char* out_string = string_duplicate(buffer);
     return out_string;
 }
