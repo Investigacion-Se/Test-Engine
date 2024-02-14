@@ -4,9 +4,7 @@
 #include <string.h>
 
 u64 string_length(const char* str) {
-    u64 length;
-    for (length = 0; str + length != '\0'; length++) {}
-    return length;
+    return strlen(str);
 }
 
 char* string_duplicate(const char* string) {
