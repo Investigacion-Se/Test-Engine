@@ -13,3 +13,7 @@ char* string_duplicate(const char* string) {
     kcopy_memory(copy, string, length + 1);
     return copy;
 }
+
+b8 strings_equal(const char* str, const char* other) {
+    return strcmp(str, other) == 0;
+}
